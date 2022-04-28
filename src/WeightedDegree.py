@@ -27,7 +27,7 @@ def calculateEdgeWeight(Edge_List):
     Edge_List.sort()
     monthWeightList = []
     returnEdge_List = []
-    weight = (1-Edge_List[0][3]/101)
+    weight = (1-(Edge_List[0][3]/101)**2)
     
     max_value = 0
     min_value = 1000
@@ -48,10 +48,10 @@ def calculateEdgeWeight(Edge_List):
             break;
         if(Edge_List[i][0] == Edge_List[i+1][0] and Edge_List[i][1] == Edge_List[i+1][1]):
             if(Edge_List[i][2] == Edge_List[i+1][2]):
-                weight += (1-Edge_List[i+1][3]/101)
+                weight += (1-(Edge_List[i+1][3]/101)**2)
             elif(Edge_List[i][2] != Edge_List[i+1][2]):
                 monthWeightList.append(weight)
-                weight = (1-Edge_List[i+1][3]/101)
+                weight = (1-(Edge_List[i+1][3]/101)**2)
         elif(Edge_List[i][0] != Edge_List[i+1][0] or Edge_List[i][1] != Edge_List[i+1][1]):
             temp = 0
             monthWeightList.append(weight)
@@ -66,7 +66,7 @@ def calculateEdgeWeight(Edge_List):
               min_value = temp    
             
             monthWeightList = []
-            weight = (1-Edge_List[i+1][3]/101)
+            weight = (1-(Edge_List[i+1][3]/101)**2)
     
     for j in range(0, len(returnEdge_List)):
       returnEdge_List[j][2] = (returnEdge_List[j][2] - min_value)/(max_value - min_value)
@@ -84,12 +84,6 @@ MonthList = df['Month']
 RankList = df['Rank']
 NodeList = createNode(ArtistList, ProducerList)
 EdgeList = createEdge(ArtistList, ProducerList, MonthList, RankList)
-
-num = 0
-for i in range(0, len(EdgeList)):
-  num = num + 1
-print(num)
-
 weightList = calculateEdgeWeight(EdgeList)
 
 GraphResult = nx.Graph()
